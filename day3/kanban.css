@@ -1,0 +1,46 @@
+#main-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 50px;
+}
+
+h1,
+h2 {
+  text-align: center;
+}
+
+.task-container {
+  background: #f0f0f0;
+  margin: 10px 50px;
+  padding: 10px;
+}
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.task {
+  display: flex;
+  justify-content: space-between;
+  background-color: #f9f9f9;
+  border: 1px solid #c5c5c5;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 8px;
+  cursor: grab;
+}
+
+.task-active {
+  cursor: grabbing;
+}
+
+.drop-hover {
+  background-color: #e0e0e0;
+  border: 2px dashed #999;
+}
+
+.task.keyboard-moving {
+  outline: 3px solid #3b82f6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: #eff6ff;
+}
