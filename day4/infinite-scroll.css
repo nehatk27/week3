@@ -1,0 +1,37 @@
+#content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.item {
+  padding: 20px;
+  border: 1px solid #ccc;
+  margin: 10px 0;
+}
+
+#loading {
+  text-align: center;
+  margin-top: 20px;
+  padding: 100px;
+  padding-bottom: 150px;
+  background-color: antiquewhite;
+}
+
+.spinner {
+  margin: 20px auto;
+  width: 50px;
+  height: 50px;
+  border: 8px solid yellowgreen;
+  border-radius: 50%;
+  border-top: 8px solid green;
+  animation: spin-clockwise 1s linear infinite;
+}
+
+@keyframes spin-clockwise {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
