@@ -1,0 +1,48 @@
+body {
+  background-color: rgb(10, 10, 10);
+  color: rgb(218, 218, 218);
+  margin: 20px;
+}
+
+.input {
+  margin: 20px;
+  text-align: center;
+}
+
+#github-container {
+  display: flex;
+}
+
+#profile-container {
+  border-radius: 10px;
+  border: 2px solid grey;
+  width: 30%;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#profile-avatar {
+  margin-top: 10px;
+  width: 250px;
+  border-radius: 100%;
+}
+
+#repos {
+  border-radius: 10px;
+  border: 2px solid grey;
+  margin: 20px;
+  width: 100%;
+  display: grid;
+  grid-template-columns:repeat(2, 1fr);
+}
+
+.repo {
+  border-radius: 10px;
+  border: 1px solid rgb(83, 83, 83);
+  margin: 30px;
+  padding-left:30px ;
+  padding-top: 20px;
+}
