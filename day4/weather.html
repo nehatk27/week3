@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather</title>
+    <link rel="stylesheet" href="weather.css" />
+  </head>
+  <body>
+    <div id="weather-container">
+      <h1>Weather</h1>
+      <input
+        type="text"
+        name="city"
+        id="city-input"
+        placeholder="Enter city name.."
+      />
+      <button id="search-btn">Search</button>
+
+      <h2 id="city-name" class="weather-value"></h2>
+
+      <p>
+        <b>Temperature: </b
+        ><span id="temperature" class="weather-value"></span>℃
+      </p>
+      <p>
+        <b>Wind Speed: </b>
+        <span id="wind-speed" class="weather-value"></span>km/hr
+      </p>
+      <p>
+        <b>Weather code: </b
+        ><span id="weather-code" class="weather-value"></span>
+      </p>
+      <p>
+        <b>Weather description: </b
+        ><span id="weather-description" class="weather-value"></span>
+      </p>
+    </div>
+    <script src="live-weather-widget.js"></script>
+  </body>
+</html>
