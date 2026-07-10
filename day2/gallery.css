@@ -5,6 +5,11 @@ body.no-scroll {
 section img {
   border-radius: 10px;
   box-shadow: 1px 0.5px 10px rgb(173, 173, 173);
+  background: #000000;
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  display: inline-block;
 }
 
 section img:hover {
@@ -81,4 +86,38 @@ section img:hover {
 
 .next-btn {
   right: 20px;
+}
+
+/* ---- section sticky header---- */
+
+header h1 {
+  position: fixed;
+  top: 0px;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding: 30px;
+  background-color: #ddd;
+  text-align: center;
+}
+
+.gallery-section h2 {
+  background-color: aliceblue;
+  margin-top: 55px;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+#sticky-header {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  background-color: rgb(139, 196, 134);
+  margin-top: 38px;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+  display: none;
 }
