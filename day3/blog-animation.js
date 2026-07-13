@@ -10,7 +10,7 @@ const handleIntersection = (entries, guard) => {
 
 const observerOptions = {
   root: null, // Use the main screen viewport
-  threshold: 0.5, // Trigger when 50% of the element is visible
+  threshold: 0.1, // Trigger when 10% of the element is visible
 };
 const animatorObserver = new IntersectionObserver(
   handleIntersection,
@@ -231,3 +231,110 @@ function createCommentNode(comment) {
   }
   return li;
 }
+
+// ================== Mutation Observer ====================
+
+const targetNode = document.getElementById("blog");
+const config = { childList: true, subtree: false };
+const mutationCallback = (mutationsList) => {
+  mutationsList.forEach((mutation) => {
+    if (mutation.type === "childList") {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          console.log("MutationObserver active! New node added to blog:", node);
+
+          if (node.classList.contains("fade-in-element")) {
+            animatorObserver.observe(node);
+            console.log("Linked article directly to IntersectionObserver!");
+          }
+        }
+      });
+    }
+  });
+};
+
+const muObserver = new MutationObserver(mutationCallback);
+
+if (targetNode) {
+  muObserver.observe(targetNode, config);
+}
+
+// ====== Dummy Data ======
+const addArticleBtn = document.getElementById("add-article-btn");
+
+const dummyArticles = [
+  {
+    title: "Mastering CSS Grid Layouts",
+    author: "Sarah Connor",
+    category: "design",
+    text: "CSS Grid is one of the most powerful layout systems available in modern web development. It allows you to align items into columns and rows effortlessly.",
+  },
+];
+
+if (addArticleBtn) {
+  addArticleBtn.addEventListener("click", () => {
+    const randomData = dummyArticles[0];
+    const uniqueId = Date.now();
+
+    const newArticle = document.createElement("article");
+    newArticle.className = "fade-in-element";
+    newArticle.setAttribute("data-article-id", uniqueId);
+
+    newArticle.innerHTML = `
+      <h2>${randomData.title} (New Dynamic Entry)</h2>
+      <small><time datetime="2026-07-10">July 10, 2026</time></small>
+      <section>
+        <p>${randomData.text}</p>
+      </section>
+      <footer>
+        Author: <span>${randomData.author} | </span>Category: <a href="#">${randomData.category}</a>
+      </footer>
+      <section class="comments">
+        <details>
+          <summary>Comments</summary>
+          <form class="main-comment-form">
+            <input type="text" name="username" placeholder="Username" required />
+            <textarea name="comment-text" placeholder="type your comment here.." required></textarea>
+            <button type="submit">Post</button>
+          </form>
+          <ul class="comments-container"></ul>
+        </details>
+      </section>
+    `;
+
+    targetNode.appendChild(newArticle);
+  });
+}
+
+// ===log every change in floating overlay panel===
+const uiLogBox = document.getElementById("ui-log-box");
+
+function DOMchangeMObserver(mutationList) {
+  mutationList.forEach((mutation) => {
+    if (mutation.target.closest("#ui-log-box")) return;
+    let textLog = "";
+    if (mutation.type === "childList") {
+      if (mutation.addedNodes.length > 0) {
+        textLog = "DOM change: element added";
+      }
+      if (mutation.removedNodes.length > 0) {
+        textLog = "DOM change: element deleted";
+      }
+    } else if (mutation.type === "attributes") {
+      textLog = `DOM change: attribute (${mutation.attributeName}) changed`;
+    }
+
+    if (textLog && uiLogBox) {
+      uiLogBox.innerHTML += `<div> ${textLog}</div>`;
+      uiLogBox.scrollTop = uiLogBox.scrollHeight;
+    }
+  });
+}
+
+const DOMMutationObserver = new MutationObserver(DOMchangeMObserver);
+
+DOMMutationObserver.observe(document.body, {
+  attributes: true,
+  childList: true,
+  subtree: true,
+});
