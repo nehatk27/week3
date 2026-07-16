@@ -5,13 +5,17 @@ const columnOrder = [
   "done-container",
 ];
 
+const kanbanDB = new OfflineDB("KanbanDatabase", 1);
+
+const storesConfig = [{ name: "tasks", keyPath: "id" }];
+
 const columns = document.querySelectorAll(".task-container");
 columns.forEach((column) => {
   column.addEventListener("dragover", (e) => {
     e.preventDefault();
   });
 
-  column.addEventListener("drop", (e) => {
+  column.addEventListener("drop", async (e) => {
     e.preventDefault();
     const cardId = e.dataTransfer.getData("text/plain");
     const draggedCard = document.getElementById(cardId);
@@ -19,18 +23,17 @@ columns.forEach((column) => {
     if (draggedCard) {
       const ulList = column.querySelector("ul");
       ulList.appendChild(draggedCard);
-      saveState();
+      await saveState(); // Persistence
     }
     column.classList.remove("drop-hover");
   });
 
-  column.addEventListener("dragenter", (e) => {
-    column.classList.add("drop-hover");
-  });
-
-  column.addEventListener("dragleave", (e) => {
-    column.classList.remove("drop-hover");
-  });
+  column.addEventListener("dragenter", (e) =>
+    column.classList.add("drop-hover"),
+  );
+  column.addEventListener("dragleave", (e) =>
+    column.classList.remove("drop-hover"),
+  );
 });
 
 function createTaskElement(text, id) {
@@ -47,13 +50,13 @@ function createTaskElement(text, id) {
   });
 
   const deleteBtn = newLi.querySelector("button");
-  deleteBtn.addEventListener("click", (e) => {
+  deleteBtn.addEventListener("click", async (e) => {
     e.stopPropagation();
     newLi.remove();
-    saveState();
+    await kanbanDB.deleteRecord("tasks", String(id));
   });
 
-  newLi.addEventListener("keydown", (e) => {
+  newLi.addEventListener("keydown", async (e) => {
     if (e.key === " ") {
       e.preventDefault();
 
@@ -63,7 +66,7 @@ function createTaskElement(text, id) {
       } else if (activeKeyboardCard === newLi) {
         activeKeyboardCard = null;
         newLi.classList.remove("keyboard-moving");
-        saveState();
+        await saveState();
       }
     }
 
@@ -94,50 +97,99 @@ function createTaskElement(text, id) {
 
 const inputTask = document.querySelectorAll(".input-field");
 inputTask.forEach((input) => {
-  input.addEventListener("keydown", (e) => {
+  input.addEventListener("keydown", async (e) => {
     if (e.key === "Enter") {
       const text = e.target.value.trim();
       if (text) {
-        const result = createTaskElement(text, Date.now());
+        // Stringify ID so primary keys map consistently
+        const taskId = String(Date.now());
+        const result = createTaskElement(text, taskId);
         const parentContainer = input.closest(".task-container");
         const childUl = parentContainer.querySelector("ul");
         childUl.appendChild(result);
-        saveState();
+        await saveState();
       }
       e.target.value = "";
     }
   });
 });
 
-function saveState() {
-  let state = [];
+async function saveState() {
   const currentTasks = document.querySelectorAll(".task");
-  currentTasks.forEach((task) => {
+
+  for (const task of currentTasks) {
     const text = task.querySelector(".task-text").textContent.trim();
     const taskUniqueId = task.id;
     const parentId = task.closest(".task-container").id;
 
-    state.push({
+    await kanbanDB.updateRecord("tasks", {
       id: taskUniqueId,
       text: text,
       parentId: parentId,
     });
-  });
-  localStorage.setItem("kanban", JSON.stringify(state));
-}
-
-function loadState() {
-  const saved = localStorage.getItem("kanban");
-  if (saved) {
-    const state = JSON.parse(saved);
-    state.forEach((item) => {
-      const newCard = createTaskElement(item.text, item.id);
-      const parentCol = document.getElementById(item.parentId);
-      if (parentCol) {
-        parentCol.querySelector("ul").appendChild(newCard);
-      }
-    });
   }
 }
 
-loadState();
+async function loadState() {
+  try {
+    const state = await kanbanDB.getAllRecords("tasks");
+    if (state && state.length > 0) {
+      state.forEach((item) => {
+        const newCard = createTaskElement(item.text, item.id);
+        const parentCol = document.getElementById(item.parentId);
+        if (parentCol) {
+          parentCol.querySelector("ul").appendChild(newCard);
+        }
+      });
+    }
+  } catch (err) {
+    console.error("Could not load tasks:", err);
+  }
+}
+
+async function initApp() {
+  try {
+    await kanbanDB.openDB(storesConfig);
+    await loadState();
+  } catch (error) {
+    console.error("Database connection failure:", error);
+  }
+}
+
+initApp();
+
+//  =============== sync mechanism (mock API) ===========
+async function syncDataOnline() {
+  try {
+    const states = await kanbanDB.getAllRecords("tasks");
+    if (!states || states.length === 0) {
+      console.log("Sync skipped: No local board data found to upload");
+      return;
+    }
+    const data = states[0];
+    console.log("Syncing states", data);
+    const response = await fetch("https://jsonplaceholder.typicode.com/todos", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: "Kanban Board",
+        body: data,
+        userId: 1,
+      }),
+    });
+    if (response.ok) {
+      const result = await response.json();
+      console.log("Sync complete", result);
+    } else {
+      throw new Error(response.status);
+    }
+  } catch (error) {
+    console.error("Error: ", error);
+  }
+}
+
+window.addEventListener("online", () => {
+  syncDataOnline();
+});
