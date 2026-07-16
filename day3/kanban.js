@@ -166,8 +166,7 @@ async function syncDataOnline() {
       console.log("Sync skipped: No local board data found to upload");
       return;
     }
-    const data = states[0];
-    console.log("Syncing states", data);
+    console.log("Syncing states:", states);
     const response = await fetch("https://jsonplaceholder.typicode.com/todos", {
       method: "POST",
       headers: {
@@ -175,7 +174,7 @@ async function syncDataOnline() {
       },
       body: JSON.stringify({
         title: "Kanban Board",
-        body: data,
+        tasks: states,
         userId: 1,
       }),
     });
