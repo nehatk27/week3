@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kanban Board</title>
+    <link rel="stylesheet" href="kanban.css" />
+  </head>
+  <body>
+    <h1>Kanban Board</h1>
+    <div id="main-container">
+      <div id="to-do-container" class="task-container">
+        <h2>Tasks To Do</h2>
+        <input
+          type="text"
+          class="input-field"
+          placeholder="Add new task to do .."
+        />
+        <ul class="to-do-lists"></ul>
+      </div>
+      <div id="in-progress-container" class="task-container">
+        <h2>Tasks In Progress</h2>
+        <input
+          type="text"
+          class="input-field"
+          placeholder="Add new task in progress .."
+        />
+        <ul class="to-do-lists"></ul>
+      </div>
+      <div id="done-container" class="task-container">
+        <h2>Tasks Done</h2>
+        <input
+          type="text"
+          class="input-field"
+          placeholder="Add tasks done .."
+        />
+
+        <ul class="to-do-lists"></ul>
+      </div>
+    </div>
+    <script src="/week4-day2/indexedDb-wrapper.js"></script>
+    <script src="kanban.js"></script>
+  </body>
+</html>
