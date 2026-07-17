@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="validate.css" />
+  </head>
+  <body>
+    <main class="form-container">
+      <h1>Create an Account</h1>
+      <p class="subtitle">Please fill in your details to register.</p>
+
+      <form action="/" method="post" id="registrationForm" novalidate>
+        <fieldset>
+          <legend>Personal Profile</legend>
+
+          <div class="form-group">
+            <label for="username"
+              >Username <span class="required">*</span></label
+            >
+            <input type="text" name="username" id="username" />
+            <span class="field-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="email"
+              >Email Address <span class="required">*</span></label
+            >
+            <input type="email" name="email" id="email" />
+            <span class="field-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" name="age" id="age" />
+            <span class="field-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="password"
+              >Password <span class="required">*</span></label
+            >
+            <input type="password" name="password" id="password" />
+            <span class="field-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword"
+              >Confirm Password <span class="required">*</span></label
+            >
+            <input
+              type="password"
+              name="confirmPassword"
+              id="confirmPassword"
+            />
+            <span class="field-error"></span>
+          </div>
+        </fieldset>
+
+        <div class="form-footer">
+          <small class="hint"
+            >* Fields marked with an asterisk are mandatory</small
+          >
+          <button type="submit" class="btn-submit">Register Now</button>
+        </div>
+      </form>
+    </main>
+    <script src="validate.js"></script>
+  </body>
+</html>

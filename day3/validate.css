@@ -1,0 +1,70 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 40px auto;
+  max-width: 500px;
+  padding: 20px;
+}
+
+fieldset {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="password"] {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box; 
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-checkbox {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+input.is-valid {
+  border: 2px solid green !important;
+  background-color: #f0fff0;
+}
+
+input.is-invalid {
+  border: 2px solid red !important;
+  background-color: #fff0f0;
+}
+
+span.field-error {
+  color: red;
+  font-size: 13px;
+  display: block;
+  margin-top: 4px;
+}
+
+.btn-submit {
+  background-color: blue;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-submit:hover {
+  background-color: darkblue;
+}
