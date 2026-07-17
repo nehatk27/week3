@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bubbling, Capturing & stopPropagation</title>
+    <style>
+      body * {
+        margin: 20px;
+        padding: 10px;
+        border: 1px solid blue;
+        display: block;
+      }
+      button,
+      a {
+        display: inline-block;
+        margin-top: 10px;
+      }
+      .controls {
+        border: 2px dashed red;
+      }
+      script {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="controls">
+      <h2>Toggle Features:</h2>
+      <label>
+        <input type="checkbox" id="enable-stop-prop" /> Enable stopPropagation()
+      </label>
+      <label>
+        <input type="checkbox" id="enable-stop-immediate" />
+        Enable stopImmediatePropagation()
+      </label>
+    </div>
+
+    <div class="outer-div">
+      Outer Div
+      <div class="middle-div">
+        Middle Div
+        <div class="inner-div">Inner Child Div (Click Me)</div>
+      </div>
+    </div>
+
+    <a href="https://google.com" id="my-link">Go to Google (Link)</a>
+    <form id="form-id">
+      <input type="text" placeholder="Form input..." required />
+      <button type="submit">Submit Form</button>
+    </form>
+
+    <script src="script.js"></script>
+  </body>
+</html>
